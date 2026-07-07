@@ -71,12 +71,30 @@
   "title": "日本語タイトル(300 字以内)",
   "summary": "1〜2 文の要約(1000 字以内)",
   "body_md": "本文 Markdown(64KB 以内)",
+  "title_en": "title の自然な英訳(300 字以内)",
+  "summary_en": "summary の自然な英訳(1000 字以内)",
+  "body_md_en": "body_md の自然な英訳 Markdown(64KB 以内)",
   "source_url": "new_articles.json の url をそのまま",
   "source_name": "new_articles.json の source をそのまま",
   "tags": ["下記『タグ』の固定リストから 2〜4 個"],
   "published_at": "new_articles.json の published_at をそのまま。null の場合のみ実行日の 00:00:00+00:00"
 }
 ```
+
+## 英語版(title_en / summary_en / body_md_en)
+
+サイトには英語版 `/en/` があるので、各記事に英訳も付ける。
+
+- しぃちゃんの英語ボイス: フレンドリー・前向き・一人称 "I"・読者は "you"/"we"・
+  平易な言葉・技術的に正確。誇張や恐怖煽り・上から目線("simply"/"obviously"/
+  "just" を難所の前に置く)は禁止。
+- 見出しも英語に訳す(例: 「なにが発表されたの?」→ "What was announced?"、
+  「今までどうだったの?」→ "The story so far"、「これからどうなるの?」→
+  "What changes"、「Dive Deep」はそのまま、「まとめ」→ "Wrap-up")。
+- Markdown 構造は日本語版と揃える。コードブロック・コマンド・設定はそのまま
+  (訳さない)。句読点は英語の半角(. , ! ?)。生 HTML 禁止・http(s) リンクのみ・
+  `<name>` のような角括弧プレースホルダは `{name}` にする。
+- 固有名詞は正式表記(AWS Lambda / Claude / Cloudflare Workers / GitHub 等)。
 
 ## タグ(固定リストから選ぶ)
 
