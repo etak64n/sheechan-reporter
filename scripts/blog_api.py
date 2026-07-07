@@ -6,7 +6,9 @@ blog's .dev.vars DEV_BEARER_TOKEN).
 
 import json
 import os
+import time
 import urllib.error
+import urllib.parse
 import urllib.request
 
 BLOG_API_URL = os.environ.get("BLOG_API_URL", "https://blog.sheechan.etak64n.dev")
@@ -25,12 +27,21 @@ def get_token() -> str:
         raise RuntimeError(
             "OIDC env vars missing; the workflow needs `permissions: id-token: write`"
         )
+    audience = urllib.parse.quote(OIDC_AUDIENCE, safe="")
     req = urllib.request.Request(
-        f"{req_url}&audience={OIDC_AUDIENCE}",
+        f"{req_url}&audience={audience}",
         headers={"Authorization": f"Bearer {req_token}"},
     )
-    with urllib.request.urlopen(req, timeout=30) as res:
-        return json.load(res)["value"]
+    # GitHub's OIDC endpoint occasionally returns 5xx; retry with backoff
+    for attempt in range(5):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as res:
+                return json.load(res)["value"]
+        except urllib.error.HTTPError as e:
+            if e.code < 500 or attempt == 4:
+                raise
+            time.sleep(2**attempt)
+    raise AssertionError("unreachable")
 
 
 def post_article(token: str, article: dict) -> None:
