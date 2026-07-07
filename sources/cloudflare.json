@@ -1,5 +1,5 @@
 [
-  { "name": "Cloudflare", "type": "rss", "url": "https://blog.cloudflare.com/rss/" },
+  { "name": "Cloudflare Blog", "type": "rss", "url": "https://blog.cloudflare.com/rss/" },
   {
     "name": "Cloudflare Changelog",
     "type": "rss",
