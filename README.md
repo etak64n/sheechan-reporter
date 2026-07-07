@@ -1,4 +1,4 @@
-# sheechan-reporter
+# shiichan-reporter
 
 Bot that watches the tech blogs defined in `sources.json` (initially AWS /
 Anthropic / OpenAI / Cloudflare), writes Japanese introduction articles for new
@@ -24,8 +24,8 @@ GitHub Actions (daily at 10:07 JST)
 
 ## Setup
 
-1. Push this repository as `etak64n/sheechan-reporter`. The blog pins
-   `ALLOWED_OIDC_SUB` to `repo:etak64n/sheechan-reporter:ref:refs/heads/main`,
+1. Push this repository as `etak64n/shiichan-reporter`. The blog pins
+   `ALLOWED_OIDC_SUB` to `repo:etak64n/shiichan-reporter:ref:refs/heads/main`,
    so renaming the repo requires updating the blog's wrangler.jsonc too
 2. Run `claude setup-token` locally (Pro/Max subscription, valid for 1 year) and
    store the token as the repository secret `CLAUDE_CODE_OAUTH_TOKEN`

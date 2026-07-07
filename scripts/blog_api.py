@@ -15,7 +15,7 @@ BLOG_API_URL = os.environ.get("BLOG_API_URL", "https://blog.shiichan.etak64n.dev
 OIDC_AUDIENCE = os.environ.get("OIDC_AUDIENCE", "https://blog.shiichan.etak64n.dev")
 
 # Cloudflare's Browser Integrity Check rejects the default python-urllib UA (403/1010)
-UA = "sheechan-reporter/1.0 (+https://blog.shiichan.etak64n.dev)"
+UA = "shiichan-reporter/1.0 (+https://blog.shiichan.etak64n.dev)"
 
 
 def get_token() -> str:
