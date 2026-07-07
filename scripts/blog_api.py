@@ -14,6 +14,9 @@ import urllib.request
 BLOG_API_URL = os.environ.get("BLOG_API_URL", "https://blog.sheechan.etak64n.dev")
 OIDC_AUDIENCE = os.environ.get("OIDC_AUDIENCE", "https://blog.sheechan.etak64n.dev")
 
+# Cloudflare's Browser Integrity Check rejects the default python-urllib UA (403/1010)
+UA = "sheechan-reporter/1.0 (+https://blog.sheechan.etak64n.dev)"
+
 
 def get_token() -> str:
     """Return a bearer token: BLOG_DEV_TOKEN if set, otherwise a fresh OIDC token."""
@@ -54,6 +57,7 @@ def post_article(token: str, article: dict) -> None:
         headers={
             "Authorization": f"Bearer {token}",
             "Content-Type": "application/json",
+            "User-Agent": UA,
         },
     )
     try:
