@@ -38,7 +38,9 @@ jobs:
           prompt: |
             work/new_articles.json に新着記事の一覧があります。
             prompts/generate.md の指示に厳密に従い、各記事の紹介記事 JSON を outbox/ に作成してください。
-          claude_args: "--allowedTools WebFetch,Read,Write,Glob,Grep --max-turns 80"
+          # WebSearch and curl are fallbacks for pages that block WebFetch
+          # (bot protection / JS-rendered pages; e.g. openai.com)
+          claude_args: "--allowedTools WebFetch,WebSearch,Bash(curl:*),Read,Write,Glob,Grep --max-turns 100"
 
       # ③ ブログ入稿 API へ POST(OIDC トークンはこのステップ内で発行)
       - name: Post to blog

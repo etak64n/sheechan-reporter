@@ -31,6 +31,12 @@ def fetch(url: str) -> bytes:
         return res.read()
 
 
+def strip_html(text: str, limit: int = 1500) -> str:
+    text = re.sub(r"<[^>]+>", " ", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text[:limit]
+
+
 def normalize_isodate(value: str) -> str | None:
     value = (value or "").strip()
     if not value:
@@ -59,6 +65,8 @@ def parse_rss(xml_bytes: bytes, src: dict) -> list[dict]:
                 "title": (item.findtext("title") or "").strip(),
                 "url": link,
                 "published_at": published,
+                # Fallback material for the generator when the page itself is unfetchable
+                "excerpt": strip_html(item.findtext("description") or ""),
             }
         )
     return items
@@ -80,6 +88,11 @@ def parse_atom(xml_bytes: bytes, src: dict) -> list[dict]:
                 "title": (entry.findtext("a:title", "", ATOM_NS) or "").strip(),
                 "url": link,
                 "published_at": published,
+                "excerpt": strip_html(
+                    entry.findtext("a:summary", "", ATOM_NS)
+                    or entry.findtext("a:content", "", ATOM_NS)
+                    or ""
+                ),
             }
         )
     return items
@@ -116,6 +129,7 @@ def parse_sitemap(xml_bytes: bytes, src: dict) -> list[dict]:
                 "title": slug.replace("-", " "),
                 "url": loc,
                 "published_at": lastmod,
+                "excerpt": "",
             }
         )
     return items
