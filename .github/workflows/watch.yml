@@ -1,0 +1,54 @@
+name: watch
+
+on:
+  schedule:
+    - cron: "0 */6 * * *" # 6時間おき
+  workflow_dispatch: {}
+
+permissions:
+  contents: write # state/articles のコミット用
+  id-token: write # ブログ入稿 API の OIDC 認証用
+
+concurrency:
+  group: watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      # ① 新着検出。LLM 不使用なので、新着ゼロの回はサブスク枠を消費しない
+      - name: Detect new articles
+        id: diff
+        run: python3 scripts/check_feeds.py
+
+      # ② Claude Code で紹介記事を生成(setup-token = サブスク枠、API 課金なし)
+      - name: Generate articles
+        if: steps.diff.outputs.has_new == 'true'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            work/new_articles.json に新着記事の一覧があります。
+            prompts/generate.md の指示に厳密に従い、各記事の紹介記事 JSON を outbox/ に作成してください。
+          claude_args: "--allowedTools WebFetch,Read,Write,Glob,Grep --max-turns 80"
+
+      # ③ ブログ入稿 API へ POST(OIDC トークンはこのステップ内で発行)
+      - name: Post to blog
+        if: steps.diff.outputs.has_new == 'true'
+        env:
+          BLOG_API_URL: https://blog.sheechan.etak64n.dev
+        run: python3 scripts/post_articles.py
+
+      # ④ 既読状態とアーカイブをコミット(投稿が部分的に失敗しても成功分は永続化する)
+      - name: Persist state
+        if: ${{ !cancelled() }}
+        run: |
+          git config user.name "sheechan-reporter[bot]"
+          git config user.email "sheechan-reporter@users.noreply.github.com"
+          git add state articles outbox
+          git diff --cached --quiet || git commit -m "publish: $(date -u '+%Y-%m-%d %H:%M') UTC"
+          git push

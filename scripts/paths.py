@@ -1,0 +1,12 @@
+"""Repository layout constants shared by the scripts."""
+
+import os
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+SOURCES_PATH = os.path.join(ROOT, "sources.json")
+STATE_PATH = os.path.join(ROOT, "state", "seen.json")
+WORK_DIR = os.path.join(ROOT, "work")
+NEW_ARTICLES_PATH = os.path.join(WORK_DIR, "new_articles.json")
+OUTBOX_DIR = os.path.join(ROOT, "outbox")
+ARCHIVE_DIR = os.path.join(ROOT, "articles")
