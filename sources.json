@@ -29,5 +29,10 @@
     "type": "sitemap",
     "url": "https://www.anthropic.com/sitemap.xml",
     "include_path": "/engineering/"
+  },
+  {
+    "name": "JP Windows Support",
+    "type": "atom",
+    "url": "https://jpwinsup.github.io/blog/atom.xml"
   }
 ]
