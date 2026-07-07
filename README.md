@@ -40,8 +40,14 @@ GitHub Actions (daily at 10:07 JST)
    { "name": "GitHub", "type": "atom", "url": "https://github.blog/feed/" }
    ```
 
-   - `type` is `rss` / `atom` / `sitemap`. For `sitemap`, set `include_path`
-     to the path fragment shared by article URLs (e.g. Anthropic's `"/news/"`)
+   - `type` is `rss` / `atom` / `sitemap` / `html`
+   - `include_path` (any type): only URLs containing this substring count as
+     articles (required for `sitemap`, e.g. Anthropic's `"/news/"`)
+   - `link_pattern` (`html` only): regex whose first capture group is the
+     article URL, for sites with no feed at all
+   - `mode: "digest"` (with `page_url`): for high-volume sources (e.g. AWS
+     What's New at ~7/day) all new items are rolled into ONE daily roundup
+     article instead of one article each; exempt from the per-run cap
    - `name` is shown on the blog as the article's source
 2. Add the new site's domain to `ALLOWED_SOURCE_HOSTS` in the blog's
    wrangler.jsonc and deploy

@@ -16,12 +16,13 @@ failed post is retried on the next run.
 import json
 import os
 import sys
+from datetime import datetime, timezone
 
 from feeds import PARSERS, fetch, load_sources
-from paths import NEW_ARTICLES_PATH, WORK_DIR
+from paths import DIGEST_ITEMS_PATH, NEW_ARTICLES_PATH, WORK_DIR
 from state import load_state, normalize_url, save_state
 
-MAX_NEW_PER_RUN = 10  # articles per run; the overflow is picked up next run
+MAX_NEW_PER_RUN = 20  # articles per run; the overflow is picked up next run
 
 
 def write_output(key: str, value: str) -> None:
@@ -31,12 +32,18 @@ def write_output(key: str, value: str) -> None:
             f.write(f"{key}={value}\n")
 
 
-def collect_new_items(sources: list[dict], state: dict) -> list[dict]:
-    """Fetch every source and return unseen items. Bootstraps new sources in place."""
+def collect_new_items(sources: list[dict], state: dict) -> tuple[list[dict], list[dict]]:
+    """Fetch every source and return (article items, digest groups) of unseen items.
+
+    Bootstraps new sources in place. Digest-mode sources collapse all their new
+    items into one group each, later rendered as a single roundup article, so
+    they are exempt from MAX_NEW_PER_RUN.
+    """
     seen = set(state["seen_urls"])
     bootstrapped = set(state["bootstrapped_sources"])
 
     new_items: list[dict] = []
+    digest_groups: list[dict] = []
     fetched_any = False
     for src in sources:
         try:
@@ -45,6 +52,9 @@ def collect_new_items(sources: list[dict], state: dict) -> list[dict]:
             print(f"warn: failed to fetch {src['name']}: {e}", file=sys.stderr)
             continue
         fetched_any = True
+
+        if src.get("include_path"):
+            items = [i for i in items if src["include_path"] in i["url"]]
 
         if src["name"] not in bootstrapped:
             # First run or newly added source: mark current articles as seen,
@@ -55,14 +65,27 @@ def collect_new_items(sources: list[dict], state: dict) -> list[dict]:
             print(f"bootstrap: initialized {src['name']} with {len(urls)} seen articles (nothing published)")
             continue
 
-        new_items.extend(i for i in items if normalize_url(i["url"]) not in seen)
+        unseen = [i for i in items if normalize_url(i["url"]) not in seen]
+        if not unseen:
+            continue
+        if src.get("mode") == "digest":
+            digest_groups.append(
+                {
+                    "source": src["name"],
+                    "page_url": src["page_url"],
+                    "date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+                    "items": unseen,
+                }
+            )
+        else:
+            new_items.extend(unseen)
 
     if not fetched_any:
         raise RuntimeError("all sources failed")
 
     state["seen_urls"] = list(seen)
     state["bootstrapped_sources"] = list(bootstrapped)
-    return new_items
+    return new_items, digest_groups
 
 
 def cap_and_dedupe(items: list[dict]) -> tuple[list[dict], int]:
@@ -78,7 +101,7 @@ def main() -> int:
     state = load_state()
 
     try:
-        new_items = collect_new_items(sources, state)
+        new_items, digest_groups = collect_new_items(sources, state)
     except RuntimeError as e:
         print(f"error: {e}", file=sys.stderr)
         return 1
@@ -89,12 +112,17 @@ def main() -> int:
     os.makedirs(WORK_DIR, exist_ok=True)
     with open(NEW_ARTICLES_PATH, "w") as f:
         json.dump(new_items, f, ensure_ascii=False, indent=2)
+    with open(DIGEST_ITEMS_PATH, "w") as f:
+        json.dump(digest_groups, f, ensure_ascii=False, indent=2)
 
-    write_output("has_new", "true" if new_items else "false")
+    has_new = bool(new_items or digest_groups)
+    write_output("has_new", "true" if has_new else "false")
     write_output("count", str(len(new_items)))
     print(f"{len(new_items)} new article(s)" + (f" ({dropped} over the cap deferred to next run)" if dropped else ""))
     for i in new_items:
         print(f"  [{i['source']}] {i['title']} — {i['url']}")
+    for g in digest_groups:
+        print(f"  [digest] {g['source']}: {len(g['items'])} item(s)")
     return 0
 
 

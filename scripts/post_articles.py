@@ -41,6 +41,9 @@ def main() -> int:
             continue
 
         seen.add(normalize_url(article["source_url"]))
+        # Digest articles cover many upstream items; mark them all as seen
+        for url in article.get("covered_urls", []):
+            seen.add(normalize_url(url))
         shutil.move(path, os.path.join(ARCHIVE_DIR, name))
         print(f"published: {article['slug']} ({article['source_name']})")
 

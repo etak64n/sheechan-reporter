@@ -46,6 +46,20 @@
 }
 ```
 
+## ダイジェスト記事(work/digest_items.json)
+
+`work/digest_items.json` に空でないグループがある場合、**グループごとに 1 本だけ**まとめ記事を作る:
+
+- slug: `<source名を英小文字ハイフン化>-digest-<date>`(例: `aws-whats-new-digest-2026-07-08`)
+- title: 「AWS What's New まとめ(2026-07-08)」のような日本語タイトル
+- body_md: 冒頭で特に重要な発表を 2〜3 個ハイライトし、残りをテーマ別に整理して
+  各項目 1〜2 文 + 原文への Markdown リンク。各項目の `excerpt` を主素材とし、
+  詳細確認が必要な項目だけ個別に取得する
+- source_url: グループの `page_url` をそのまま
+- source_name: グループの `source` をそのまま
+- published_at: `<date>T00:00:00+00:00`
+- **covered_urls**: グループ内全項目の `url` の配列(必須。既読管理に使われる)
+
 ## 注意
 
 - Anthropic のエントリの `title` はスラッグ由来の仮タイトル。原文ページから正しいタイトルを取得すること

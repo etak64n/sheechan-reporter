@@ -36,8 +36,8 @@ jobs:
           # Use the workflow's own token instead of the Claude GitHub App
           github_token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
-            work/new_articles.json に新着記事の一覧があります。
-            prompts/generate.md の指示に厳密に従い、各記事の紹介記事 JSON を outbox/ に作成してください。
+            work/new_articles.json(個別記事)と work/digest_items.json(ダイジェスト対象)に新着があります。
+            prompts/generate.md の指示に厳密に従い、記事 JSON を outbox/ に作成してください。
           # WebSearch and curl are fallbacks for pages that block WebFetch
           # (bot protection / JS-rendered pages; e.g. openai.com)
           claude_args: "--allowedTools WebFetch,WebSearch,Bash(curl:*),Read,Write,Glob,Grep --max-turns 100"

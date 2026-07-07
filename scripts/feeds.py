@@ -13,6 +13,7 @@ sources.json entry:
 
 import json
 import re
+import urllib.parse
 import urllib.request
 from datetime import timezone
 from email.utils import parsedate_to_datetime
@@ -135,7 +136,45 @@ def parse_sitemap(xml_bytes: bytes, src: dict) -> list[dict]:
     return items
 
 
-PARSERS = {"rss": parse_rss, "atom": parse_atom, "sitemap": parse_sitemap}
+def parse_html_links(html_bytes: bytes, src: dict) -> list[dict]:
+    """For sites with no feed at all: extract article links from an index page.
+
+    link_pattern is a regex whose first capture group is the article URL
+    (absolute or relative to the page URL). Pages carry no dates, so
+    published_at is None; new articles are simply the not-yet-seen links.
+    """
+    pattern = src.get("link_pattern")
+    if not pattern:
+        raise ValueError(f"{src['name']}: html type requires link_pattern")
+    html = html_bytes.decode("utf-8", errors="replace")
+    items = []
+    found = set()
+    for m in re.finditer(pattern, html):
+        url = urllib.parse.urljoin(src["url"], m.group(1))
+        if url in found:
+            continue
+        found.add(url)
+        slug = url.rstrip("/").rsplit("/", 1)[-1]
+        items.append(
+            {
+                "source": src["name"],
+                # No title in link lists; slug-derived placeholder, real title
+                # comes from the article page at generation time
+                "title": slug.replace("-", " "),
+                "url": url,
+                "published_at": None,
+                "excerpt": "",
+            }
+        )
+    return items
+
+
+PARSERS = {
+    "rss": parse_rss,
+    "atom": parse_atom,
+    "sitemap": parse_sitemap,
+    "html": parse_html_links,
+}
 
 
 def load_sources() -> list[dict]:
@@ -148,6 +187,10 @@ def load_sources() -> list[dict]:
             )
         if not src.get("name") or not src.get("url"):
             raise ValueError(f"name and url are required: {src}")
+        if src.get("mode", "article") not in ("article", "digest"):
+            raise ValueError(f"{src['name']}: mode must be 'article' or 'digest'")
+        if src.get("mode") == "digest" and not src.get("page_url"):
+            raise ValueError(f"{src['name']}: digest mode requires page_url")
     names = [s["name"] for s in sources]
     if len(names) != len(set(names)):
         raise ValueError("duplicate name in sources.json")
