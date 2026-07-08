@@ -11,10 +11,41 @@ import json
 import os
 import shutil
 import sys
+import urllib.request
 
 from blog_api import get_token, post_article
 from paths import ARCHIVE_DIR, OUTBOX_DIR
 from state import load_state, normalize_url, save_state
+
+
+def purge_cache(published: int) -> None:
+    """Purge the Cloudflare edge cache so the edge-cached list pages reflect the
+    new articles immediately (the Worker edge-caches /list, /posts, /archive,
+    /feed.xml, ... with a long TTL). Best-effort and a no-op unless both
+    CF_PURGE_TOKEN and CF_ZONE_ID are set, so it is safe before the secrets
+    exist and never blocks publishing."""
+    if published <= 0:
+        return
+    token = os.environ.get("CF_PURGE_TOKEN")
+    zone = os.environ.get("CF_ZONE_ID")
+    if not token or not zone:
+        print("cache purge skipped (CF_PURGE_TOKEN / CF_ZONE_ID not set)")
+        return
+    req = urllib.request.Request(
+        f"https://api.cloudflare.com/client/v4/zones/{zone}/purge_cache",
+        data=json.dumps({"purge_everything": True}).encode(),
+        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            body = json.load(resp)
+        if body.get("success"):
+            print("cache purged (purge_everything)")
+        else:
+            print(f"cache purge failed: {body.get('errors')}", file=sys.stderr)
+    except Exception as e:
+        print(f"cache purge error: {e}", file=sys.stderr)
 
 
 def main() -> int:
@@ -29,6 +60,7 @@ def main() -> int:
 
     os.makedirs(ARCHIVE_DIR, exist_ok=True)
     failures = 0
+    published = 0
     for path in files:
         name = os.path.basename(path)
         try:
@@ -51,10 +83,13 @@ def main() -> int:
         for url in article.get("covered_urls", []):
             seen.add(normalize_url(url))
         shutil.move(path, os.path.join(ARCHIVE_DIR, name))
+        published += 1
         print(f"published: {article['slug']} ({article['source_name']})")
 
     state["seen_urls"] = sorted(seen)
     save_state(state)
+
+    purge_cache(published)
 
     if failures:
         print(f"{failures}/{len(files)} failed (left in outbox, retried next run)", file=sys.stderr)

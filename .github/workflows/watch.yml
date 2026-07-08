@@ -75,6 +75,10 @@ jobs:
         if: steps.diff.outputs.has_new == 'true'
         env:
           BLOG_API_URL: https://blog.shiichan.etak64n.dev
+          # Purge the edge cache after publishing so list pages update instantly.
+          # No-op if these secrets are unset (purge is skipped, not an error).
+          CF_PURGE_TOKEN: ${{ secrets.CF_PURGE_TOKEN }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
         run: python3 scripts/post_articles.py
 
       # ④ 既読状態とアーカイブをコミット(投稿が部分的に失敗しても成功分は永続化する)
