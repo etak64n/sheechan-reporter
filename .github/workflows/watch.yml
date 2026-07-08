@@ -82,5 +82,19 @@ jobs:
           git config user.name "shiichan-reporter[bot]"
           git config user.email "shiichan-reporter@users.noreply.github.com"
           git add state articles outbox
-          git diff --cached --quiet || git commit -m "publish: $(date -u '+%Y-%m-%d %H:%M') UTC"
-          git push
+          git diff --cached --quiet && { echo "nothing to persist"; exit 0; }
+          git commit -m "publish: $(date -u '+%Y-%m-%d %H:%M') UTC"
+          # Another push (a manual run, or a concurrent job) may have advanced
+          # main between our checkout and now. Rebase onto it and retry rather
+          # than failing. seen.json / archive files are per-item, so rebasing
+          # our commit on top merges cleanly; a rare true conflict aborts and
+          # is retried on the next scheduled run.
+          for attempt in 1 2 3 4 5; do
+            if git push; then echo "pushed (attempt $attempt)"; exit 0; fi
+            echo "push rejected (attempt $attempt) — main advanced; rebasing"
+            git pull --rebase --no-edit origin main \
+              || { git rebase --abort 2>/dev/null || true; echo "rebase conflict; retrying next run" >&2; exit 1; }
+            sleep $((RANDOM % 5 + 1))
+          done
+          echo "push still failing after retries" >&2
+          exit 1
