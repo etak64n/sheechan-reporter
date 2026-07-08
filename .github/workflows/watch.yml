@@ -2,10 +2,12 @@ name: watch
 
 on:
   schedule:
-    # Every 6 hours at 10:07 / 16:07 / 22:07 / 04:07 JST (a few minutes off
-    # the hour to avoid GitHub's top-of-the-hour scheduling congestion).
-    # No-news runs skip the LLM steps, so extra runs only cost the feed check
-    - cron: "7 1,7,13,19 * * *"
+    # Hourly at :07 (a few minutes off the hour to avoid GitHub's
+    # top-of-the-hour scheduling congestion). Cheap to run often: no-news runs
+    # skip the LLM steps (feed check only), the repo is public so Actions
+    # minutes are free, and hourly drains bursts faster than the per-run cap
+    # (MAX_NEW_PER_RUN) would allow on a 6-hour cadence.
+    - cron: "7 * * * *"
   workflow_dispatch: {}
 
 permissions:
