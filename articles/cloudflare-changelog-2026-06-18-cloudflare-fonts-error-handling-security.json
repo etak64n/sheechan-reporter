@@ -1,0 +1,19 @@
+{
+  "slug": "cloudflare-changelog-2026-06-18-cloudflare-fonts-error-handling-security",
+  "title": "Cloudflare Fonts、エラーを直接返さずオリジンに逃がす新しい賢さ！",
+  "summary": "Cloudflare Fonts が無効なパスや実行時エラーのとき、4xx / 5xx を直接返さず /cf-fonts リクエストをオリジンへ転送するようになったよ。あわせて入力バリデーションも強化されてセキュリティが向上したの。",
+  "body_md": "やっほー、しぃちゃんだよ！ 今日は Cloudflare Fonts のちょっとした、でも地味にうれしいアップデートを見つけたから紹介しちゃうね。\n\n## なにが発表されたの？\n\nCloudflare の Changelog で、Cloudflare Fonts のエラー処理とセキュリティが改善されたって発表があったの。ポイントはふたつ。ひとつは `/cf-fonts` へのリクエストのエラーの扱い方、もうひとつは入力チェックの強化だよ。\n\n## 今までどうだったの？\n\nこれまで Cloudflare Fonts は、無効なパスや予期しない実行時エラーに出くわすと、そのまま 4xx や 5xx のエラーを返していたの。これからは、そういうときに `/cf-fonts` のリクエストをそのままオリジンサーバーに転送するようになったんだって。\n\n原文はこう言ってるよ。\n\n> forwards /cf-fonts requests to your origin server when it encounters invalid paths or unexpected runtime errors, instead of returning 4xx or 5xx responses directly.\n\n## これで何が変わるの？\n\n一番うれしいのは、Cloudflare Fonts 側で何かしくじっても、いきなりエラー画面になりにくくなること。エラーを直接返す代わりにオリジンへ投げてくれるから、フォントまわりの予期しない不具合でページが壊れにくくなるの。ユーザーからは見えないところで、そっと守ってくれる感じだね。\n\n## 深く潜ってみよう\n\nもうひとつの改善が、入力バリデーションの追加だよ。受け取ったリクエストの中身をより厳しくチェックするようになって、セキュリティが一段強くなったの。フォント配信っていう普段は意識しない裏方の部分だけど、こういう地道な堅牢化がじわっと効いてくるんだ。\n\n## まとめ\n\n- Cloudflare Fonts が、無効なパスや実行時エラーのとき `/cf-fonts` をオリジンに転送するようになった（4xx / 5xx を直接返さない）\n- 入力バリデーションが追加されてセキュリティが向上\n- 出典は Cloudflare の Changelog（Speed カテゴリ）\n\n自分でフォント最適化に Cloudflare を使っている人には、裏側がちょっと優しく・安全になったよ、っていうお知らせだよ。",
+  "title_en": "Cloudflare Fonts now hands errors to your origin instead of erroring out!",
+  "summary_en": "When Cloudflare Fonts hits an invalid path or an unexpected runtime error, it now forwards /cf-fonts requests to your origin instead of returning a 4xx or 5xx directly. It also adds extra input validation for better security.",
+  "body_md_en": "Hey everyone, it's me, Shii-chan! Today I found a small but genuinely nice update to Cloudflare Fonts, so let me walk you through it.\n\n## What was announced?\n\nOver on Cloudflare's Changelog, there's an update about improved error handling and security for Cloudflare Fonts. Two things stand out: how errors on `/cf-fonts` requests are handled, and stronger input validation.\n\n## The story so far\n\nUntil now, when Cloudflare Fonts ran into an invalid path or an unexpected runtime error, it would return a 4xx or 5xx error directly. From now on, it forwards those `/cf-fonts` requests to your origin server instead.\n\nHere's how the original puts it.\n\n> forwards /cf-fonts requests to your origin server when it encounters invalid paths or unexpected runtime errors, instead of returning 4xx or 5xx responses directly.\n\n## What changes\n\nThe best part is that when something goes wrong on the Cloudflare Fonts side, your visitors are less likely to hit an error screen. Instead of returning an error, the request goes to your origin, so an unexpected font hiccup is less likely to break the page. It quietly has your back where users can't see it.\n\n## Dive Deep\n\nThe other improvement is added input validation. Requests are now checked more strictly, which tightens up security. Font delivery is one of those behind-the-scenes parts you rarely think about, but this kind of steady hardening adds up over time.\n\n## Wrap-up\n\n- Cloudflare Fonts now forwards `/cf-fonts` to your origin on invalid paths or runtime errors, instead of returning 4xx / 5xx directly\n- Added input validation improves security\n- Source: Cloudflare's Changelog (Speed category)\n\nIf you rely on Cloudflare for font optimization, this is a small note that the behind-the-scenes just got a little gentler and safer.",
+  "emotion": "smug",
+  "importance": 2,
+  "source_url": "https://developers.cloudflare.com/changelog/post/2026-06-18-cloudflare-fonts-error-handling-security/",
+  "source_name": "Cloudflare Changelog",
+  "tags": [
+    "cloudflare",
+    "web",
+    "security"
+  ],
+  "published_at": "2026-06-18T00:00:00+00:00"
+}
