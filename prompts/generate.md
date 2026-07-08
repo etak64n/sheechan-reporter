@@ -114,6 +114,7 @@
   "importance": "エンジニア目線の重要度。1〜3 の整数(下記の基準)",
   "source_url": "new_articles.json の url をそのまま",
   "source_name": "new_articles.json の source をそのまま",
+  "og_title": "new_articles.json の title をそのまま(元記事のタイトル。Index 表の『元の記事』列に出す。sitemap 系で仮タイトルのときは原文ページから取得した正式タイトルにする)",
   "tags": ["下記『タグ』の固定リストから 2〜4 個"],
   "published_at": "new_articles.json の published_at をそのまま。null の場合のみ実行日の 00:00:00+00:00"
 }
