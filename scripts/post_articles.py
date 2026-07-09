@@ -12,10 +12,24 @@ import os
 import shutil
 import sys
 import urllib.request
+from datetime import datetime, timezone
 
 from blog_api import get_token, post_article
 from paths import ARCHIVE_DIR, OUTBOX_DIR
 from state import load_state, normalize_url, save_state
+
+
+def stamp_ingest_time(article: dict) -> None:
+    """Date-only sources (e.g. Cloudflare Changelog) give no publish time, so the
+    generator stores them at T00:00:00 — which sinks them below same-day articles
+    that do have a real time. When such an article is published on its own source
+    date, overwrite the time with the current ingest time so it orders by actual
+    recency (the blog sorts by published_at, then created_at). Older-dated
+    articles (backfill / late catch-up) are left at their source date."""
+    pub = article.get("published_at", "")
+    now = datetime.now(timezone.utc)
+    if pub[11:] == "00:00:00+00:00" and pub[:10] == now.strftime("%Y-%m-%d"):
+        article["published_at"] = now.strftime("%Y-%m-%dT%H:%M:%S+00:00")
 
 
 def purge_cache(published: int) -> None:
@@ -72,6 +86,7 @@ def main() -> int:
                 print(f"skip (already published): {name}")
                 os.remove(path)
                 continue
+            stamp_ingest_time(article)
             post_article(token, article)
         except Exception as e:
             failures += 1
