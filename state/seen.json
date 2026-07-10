@@ -1501,6 +1501,7 @@
     "https://developers.cloudflare.com/changelog/post/2026-07-08-query-r2-sql-from-dashboard",
     "https://developers.cloudflare.com/changelog/post/2026-07-09-dynamic-retry-delays",
     "https://developers.cloudflare.com/changelog/post/2026-07-09-new-dns-firewall-ux",
+    "https://developers.cloudflare.com/changelog/post/2026-07-09-restrict-new-kv-backed-namespaces",
     "https://developers.cloudflare.com/changelog/post/2026-07-09-tunnel-routes-and-connections-api-changes",
     "https://developers.cloudflare.com/changelog/post/2026-07-10-source-code-detection-improvements",
     "https://developers.cloudflare.com/changelog/post/2026-1-15-crowdstrike-score",
