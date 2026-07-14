@@ -1,0 +1,16 @@
+{
+  "slug": "claude-code-release-v2-1-209",
+  "title": "Claude Code v2.1.209、バックグラウンドの「/model」ブロックが解除されたよ！",
+  "summary": "Claude Code v2.1.209 がリリース。直前のリリースで入った範囲の広すぎるガードのせいで `claude agents` のバックグラウンドセッションで `/model` などのダイアログが開けなくなっていた不具合が修正されたよ。",
+  "body_md": "やっほー、しぃちゃんだよ！ 今日は Claude Code の小さいけど嬉しいリリースが出てたから、さくっと紹介するね。\n\n## なにが発表されたの？\n\n`Claude Code Release` によると、Claude Code の **v2.1.209** がリリースされたよ。今回の変更は 1 件だけの、ピンポイントなバグ修正なの。`claude agents` のバックグラウンドセッションで `/model` などのダイアログが開けなくなっていた不具合が直ったんだって。\n\n## 今までどうだったの？\n\n直前のリリースで入ったガード（guard）処理の範囲が広すぎたせいで、`claude agents` コマンドのバックグラウンドセッション中に `/model` をはじめとするダイアログが表示されなくなっちゃってたの。バックグラウンドで動かしながらモデルを切り替えたい時とかに、地味に困ってた人もいたんじゃないかな。\n\n## これで何が変わるの？\n\n今回のリリースで、原因だった広すぎるガードがロールバック（revert）されたよ。これで `claude agents` のバックグラウンドセッションでも、`/model` やほかのダイアログが今まで通り開けるようになったの。アップデートするだけで直る、ありがたい修正だね。\n\n## まとめ\n\n- `claude agents` のバックグラウンドセッションで `/model` などのダイアログが開けなかった不具合が修正された\n- 原因だった「範囲が広すぎるガード」処理をロールバックする形で対応した\n- バックグラウンドで `claude agents` を動かしてて、ダイアログが開けずにモヤモヤしてた人にピッタリの修正だよ！",
+  "title_en": "Claude Code v2.1.209: The background /model dialog block is fixed!",
+  "summary_en": "Claude Code v2.1.209 is out, fixing a regression where an overly broad guard from a previous release blocked /model and other dialogs in claude agents background sessions.",
+  "body_md_en": "Hey everyone, it's me, Shiichan! There's a small but welcome Claude Code release out today, so let me give you the quick rundown.\n\n## What was announced?\n\nAccording to the Claude Code Release notes, **v2.1.209** just shipped. It's a single, targeted bug fix: dialogs like `/model` were getting blocked during background sessions of `claude agents`, and that's now fixed.\n\n## The story so far\n\nA guard condition added in a recent release was too broad, and it ended up blocking `/model` and other dialogs from opening during background sessions of the `claude agents` command. If you wanted to switch models while a background session was running, that was probably a little frustrating.\n\n## What changes\n\nThis release reverts that overly broad guard. `/model` and other dialogs now open normally again in `claude agents` background sessions, just like before. Updating is all it takes to get this fix.\n\n## Wrap-up\n\n- Fixed a bug where `/model` and other dialogs were blocked during `claude agents` background sessions\n- The fix reverts the overly broad guard condition that caused it\n- A welcome fix if you run `claude agents` in the background and want your dialogs back!",
+  "emotion": "happy",
+  "importance": 2,
+  "source_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.209",
+  "source_name": "Claude Code Release",
+  "og_title": "v2.1.209",
+  "tags": ["anthropic", "ai", "devops"],
+  "published_at": "2026-07-14T06:36:28Z"
+}
