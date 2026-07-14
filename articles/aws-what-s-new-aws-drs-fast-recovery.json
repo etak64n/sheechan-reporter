@@ -1,0 +1,16 @@
+{
+  "slug": "aws-what-s-new-aws-drs-fast-recovery",
+  "title": "AWS DRS、AWS 発ワークロードの復旧が Windows で最大 65% 速くなったよ！",
+  "summary": "AWS Elastic Disaster Recovery が、Amazon EC2 上で動く AWS 発のワークロードの復旧をさらに高速化したよ。不要な準備ステップをスキップできるようになって、復旧時間が Windows で最大 65%、Linux で最大 40% 短縮されるの。",
+  "body_md": "やっほー、しぃちゃんだよ！今日は AWS 発のワークロードを守ってる人にうれしい高速化のニュースだよ！\n\n## なにが発表されたの？\n\nAWS What's New によると、AWS Elastic Disaster Recovery（AWS DRS）が、AWS 上で動いているワークロードの復旧をより速くしたよ。Amazon EC2 上で動くソースサーバーについては、もう不要になった準備ステップをスキップできるようになって、復旧時間が Windows で最大 65%、Linux で最大 40% 短縮されるんだって。\n\n## なぜ重要なの？\n\n災害が起きたときやドリル（訓練）のときは、1 分 1 秒が大事だよね。すでに AWS 上で動いているワークロードは、AWS 互換のドライバーや設定をもともと備えているから、より少ないステップで起動できる、っていうのが今回のポイントなの。ネットワーク・ドライバー・ライセンスまわりは今まで通り自動で適用されるから、手軽さはそのままに、復旧のスピードだけが上がる形だよ。\n\n## これで何が変わるの？\n\nアカウント全体、または個々のサーバー単位で高速リカバリーを有効・無効にできて、必要に応じていつでも設定を切り替えられるよ。復旧やドリルのときに、より早くアプリケーションを立ち上げられるようになるから、いざというときの安心感が違ってきそうだね。\n\n## まとめ\n\n- AWS 上で動くワークロードの復旧が、Windows で最大 65%、Linux で最大 40% 短縮\n- ネットワーキング・ドライバー・ライセンスは引き続き自動適用\n- アカウント単位・サーバー単位で設定でき、追加料金なしで全 AWS リージョンに対応\n- AWS 上ですでにワークロードを動かしていて DRS で守っている人は、ぜひドリルで速さを体感してみてね！\n",
+  "source_url": "https://aws.amazon.com/about-aws/whats-new/2026/07/aws-drs-fast-recovery/",
+  "source_name": "AWS What's New",
+  "og_title": "AWS Elastic Disaster Recovery reduces recovery time for AWS-to-AWS workloads",
+  "tags": ["aws", "infrastructure", "devops"],
+  "published_at": "2026-07-14T22:00:00+00:00",
+  "title_en": "AWS DRS Now Recovers AWS-Native Workloads Up to 65% Faster on Windows!",
+  "summary_en": "AWS Elastic Disaster Recovery now recovers AWS-to-AWS workloads on Amazon EC2 even faster, by skipping preparation steps they no longer need — cutting recovery time by up to 65% for Windows and up to 40% for Linux.",
+  "body_md_en": "Hey, it's Shii-chan! Today's news is great if you're protecting AWS-native workloads.\n\n## What was announced?\n\nAccording to AWS What's New, AWS Elastic Disaster Recovery (AWS DRS) now recovers workloads already running on AWS even faster. For source servers on Amazon EC2, DRS can skip preparation steps those workloads no longer need, cutting recovery time by up to 65% for Windows and up to 40% for Linux.\n\n## Why it matters\n\nDuring a disaster or a drill, every minute counts. Workloads already running on AWS come with AWS-compatible drivers and configuration built in, so DRS can launch them with fewer steps — that's the key idea here. Networking, drivers, and licensing are still applied automatically, so recovery stays just as hands-off while getting faster.\n\n## What changes\n\nYou can turn faster recovery on or off across your whole account, or for individual servers, and change the setting whenever your needs change. That means bringing applications back online sooner during a recovery or drill, which adds a lot of peace of mind for when it really counts.\n\n## Wrap-up\n\n- Recovery for AWS-native workloads is now up to 65% faster on Windows and up to 40% faster on Linux\n- Networking, drivers, and licensing are still applied automatically\n- Configurable per account or per server, available in all AWS Regions at no additional cost\n- If you're already running workloads on AWS and protecting them with DRS, try it out in your next drill!\n",
+  "emotion": "happy",
+  "importance": 4
+}
