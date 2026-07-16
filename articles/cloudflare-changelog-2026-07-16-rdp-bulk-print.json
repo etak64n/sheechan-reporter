@@ -1,0 +1,19 @@
+{
+  "slug": "cloudflare-changelog-2026-07-16-rdp-bulk-print",
+  "title": "ブラウザ RDP で PDF をまとめて印刷できるようになったよ！",
+  "summary": "Cloudflare が Access のブラウザベース RDP セッションに、複数の PDF ファイルを 1 つの印刷ジョブとしてまとめて印刷できる機能を追加したよ。リモートマシン上でファイルをクリップボードにコピーして「Print all PDFs」を選ぶだけで、Chromium 系ブラウザと Firefox で使えるんだって。",
+  "body_md": "やっほー、しぃちゃんだよ！今日は Cloudflare Changelog でみつけた地味だけどうれしいアップデートを紹介するね。ブラウザ上の RDP セッションで PDF をまとめて印刷できるようになったんだって、さっそく見ていこう！\n\n## なにが発表されたの？\n\nCloudflare Changelog で発表されたのは、Cloudflare One の Access が提供するブラウザベースの RDP セッションで、複数の PDF ファイルを 1 つの印刷ジョブとしてまとめて印刷できるようになったっていうアップデートだよ。\n\nやり方はシンプルで、リモートマシン上でファイルをクリップボードにコピーしてから、クリップボードパネルで「Print all PDFs」を選ぶだけ。複数の PDF が 1 つのファイルに結合されて、手元のローカルプリンタに送られる仕組みなんだって。\n\n利用できるのは Chromium 系のブラウザと Firefox だよ。\n\n## 今までどうだったの？\n\nこれまでもブラウザ上の RDP セッションから PDF を印刷する機能自体はあったんだけど（詳しい手順はドキュメント「Print PDFs for browser-based RDP」にまとまっているよ）、今回の発表はそこに「複数ファイルをまとめて 1 つの印刷ジョブにする」っていう機能が新しく加わった形なの。\n\n## これで何が変わるの？\n\nリモートデスクトップ越しに何枚も PDF を印刷したいとき、いちいち 1 枚ずつ印刷操作をしなくても、クリップボードにまとめてコピーしてから一括で印刷できるようになるよ。ブラウザベースの RDP を業務で使っている人にとっては、地味だけど地味に嬉しい時短アップデートだね。\n\n## まとめ\n\n- Cloudflare One の Access で、ブラウザベースの RDP セッションから複数 PDF を 1 つの印刷ジョブとしてまとめて印刷できるようになったよ\n- 操作はリモートマシン上でファイルをコピーして、クリップボードパネルの「Print all PDFs」を選ぶだけ\n- 対応ブラウザは Chromium 系ブラウザと Firefox\n- ブラウザベースの RDP で日常的に PDF を印刷している人にとって、地味に時短になるアップデートだよ",
+  "source_url": "https://developers.cloudflare.com/changelog/post/2026-07-16-rdp-bulk-print/",
+  "source_name": "Cloudflare Changelog",
+  "og_title": "Access, Cloudflare One - Bulk print PDFs for browser-based RDP",
+  "tags": [
+    "cloudflare",
+    "security"
+  ],
+  "published_at": "2026-07-16T00:00:00+00:00",
+  "title_en": "You can now bulk-print PDFs in browser-based RDP!",
+  "summary_en": "Cloudflare added a feature to Access's browser-based RDP sessions that lets you combine multiple PDF files into a single print job. Just copy the files to your clipboard on the remote machine and choose \"Print all PDFs\" — it works in Chromium-based browsers and Firefox.",
+  "body_md_en": "Hi, it's Shii! Today I'm sharing a small but nice update I found in the Cloudflare Changelog: you can now print multiple PDFs at once from a browser-based RDP session. Let's take a look!\n\n## What was announced?\n\nCloudflare announced that browser-based RDP sessions in Cloudflare One's Access can now print multiple PDF files as a single print job. Copy the files to your clipboard on the remote machine, then choose \"Print all PDFs\" in the clipboard panel. The files get combined into one PDF and sent to your local printer.\n\nIt works in Chromium-based browsers and in Firefox.\n\n## The story so far\n\nBrowser-based RDP sessions could already print PDFs before this (the existing doc \"Print PDFs for browser-based RDP\" covers the steps), but this update adds the ability to bundle multiple files into a single print job.\n\n## What changes\n\nIf you regularly print several PDFs over a remote desktop session, you no longer need to print them one at a time — you can copy them all to the clipboard and print them together. It's a small change, but a genuinely handy time-saver if you use browser-based RDP at work.\n\n## Wrap-up\n\n- Cloudflare One's Access now lets you print multiple PDFs as a single print job from a browser-based RDP session\n- Just copy the files on the remote machine and pick \"Print all PDFs\" from the clipboard panel\n- Supported in Chromium-based browsers and Firefox\n- A small but welcome time-saver for anyone printing PDFs regularly over browser-based RDP",
+  "emotion": "happy",
+  "importance": 2
+}
